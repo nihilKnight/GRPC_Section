@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+option go_package = "github.com/nihilKnight/grpc-section/plcidenrt";
+
+package plcide;
+
+import "google/protobuf/timestamp.proto";
+
+service PLCRuntimeService {
+    rpc ExportLogs(LogExportRequest) returns (stream LogEntry)
+
+    rpc ImportProjectConfig(stream ConfigChunk) returns (ImportStatus);
+    rpc ExportProjectConfig(ConfigExportRequest) returns (stream ConfigChunk);
+
+    // non-version-control
+    rpc CreateProject(ProjectMetadata) returns (ProjectCreationResponse);
+    rpc DeleteProject(ProjectIdentifier) returns (OperationStatus);
+    rpc ListProjects(ProjectFilter) returns (ProjectList);
+}
+
+
+// ==================== Logs ====================
+message LogEntry {
+  google.protobuf.Timestamp timestamp = 1;
+  LogLevel level = 2;
+  string component = 3;
+  string message = 4;
+
+  enum LogLevel {
+    DEBUG = 0;
+    INFO = 1;
+    WARNING = 2;
+    ERROR = 3;
+    UNKNOWN = 4;
+  }
+}
+
+message LogExportRequest {
+    string format = 1;  // 导出格式（"CSV"|"JSON"|"BINARY"）
+    uint32 chunk_size = 2;  // 分块大小（字节）
+}
+
+// ==================== Configuration ====================
+message ConfigChunk {
+  bytes content = 1;
+  uint32 total_chunks = 2;
+  uint32 current_chunk = 3;
+  string config_hash = 4;  // 整体配置的哈希
+}
+
+message ImportStatus {
+  enum State {
+    RECEIVING = 0;
+    VALIDATING = 1;
+    APPLIED = 2;
+    FAILED = 3;
+  }
+  State state = 1;
+  float progress = 2;  // 进度百分比
+  optional string error_detail = 3;
+}
+
+message ConfigExportRequest {
+    string version_id = 1;  // 指定导出版本
+    bool include_assets = 2;  // 是否包含资源文件
+}
+
+// ==================== Projects ====================
+message ProjectMetadata {
+  string project_id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message ProjectCreationResponse {
+  string project_id = 1;
+  google.protobuf.Timestamp created_at = 2;
+}
+
+message ProjectIdentifier {
+  string project_id = 1;
+  bool force_delete = 2;  // 是否强制删除（忽略依赖检查）
+}
+
+message ProjectFilter {
+  string name_pattern = 1;  // 名称模糊匹配
+}
+
+message ProjectList {
+  message ProjectSummary {
+    string project_id = 1;
+    string name = 2;
+  }
+  repeated ProjectSummary projects = 1;
+}
+
+message OperationStatus {
+  bool success = 1;
+  optional string error_code = 2;
+  google.protobuf.Timestamp operation_time = 3;
+}
