@@ -7,8 +7,7 @@ package plcide;
 import "google/protobuf/timestamp.proto";
 
 service PLCRuntimeService {
-    rpc ExportLogs(LogExportRequest) returns (stream LogEntry)
-
+    rpc ExportLogs(LogExportRequest) returns (stream LogEntry);
 }
 
 
