@@ -24,7 +24,7 @@ func main() {
 		{
 			ServiceName:   "ExportLogs",
 			Method:        "plcruntime.PLCRuntimeService.ExportLogs",
-			DataDir:       "testdata/export-logs",
+			DataDir:       "testdata/exportlogs",
 			TotalRequests: 1000,
 			Concurrency:   50,
 			Timeout:       10 * time.Second,
@@ -32,7 +32,7 @@ func main() {
 		{
 			ServiceName:   "CreateProject",
 			Method:        "plcruntime.PLCRuntimeService.CreateProject",
-			DataDir:       "testdata/create-project",
+			DataDir:       "testdata/createproject",
 			TotalRequests: 800,
 			Concurrency:   30,
 			Timeout:       15 * time.Second,
@@ -40,7 +40,7 @@ func main() {
 		{
 			ServiceName:   "ImportProgram",
 			Method:        "plcruntime.PLCRuntimeService.ImportProgram",
-			DataDir:       "testdata/import-program",
+			DataDir:       "testdata/importprogram",
 			TotalRequests: 1200,
 			Concurrency:   40,
 			Timeout:       20 * time.Second,
@@ -48,7 +48,7 @@ func main() {
 		{
 			ServiceName:   "ExportProject",
 			Method:        "plcruntime.PLCRuntimeService.ExportProject",
-			DataDir:       "testdata/export-project",
+			DataDir:       "testdata/exportproject",
 			TotalRequests: 600,
 			Concurrency:   20,
 			Timeout:       10 * time.Second,
