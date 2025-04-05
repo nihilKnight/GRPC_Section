@@ -1,0 +1,38 @@
+{
+    "project_id": 2,
+    "name": "HighPriorityProject",
+    "description": "Project with high priority tasks",
+    "version_string": "v2.1.0",
+    "task_num": 3,
+    "tasks": [
+        {
+            "task_id": 1,
+            "name": "EmergencyStop",
+            "type": "RISING",
+            "priority": 0,
+            "cycle": 50,
+            "trigger": "safety"
+        },
+        {
+            "task_id": 2,
+            "name": "DataSync",
+            "type": "CYCLE",
+            "priority": 1,
+            "cycle": 1000,
+            "trigger": "timer"
+        }
+    ],
+    "device_num": 2,
+    "devices": [
+        {
+            "device_id": 101,
+            "type": "MODBUS",
+            "cycle": 200
+        },
+        {
+            "device_id": 102,
+            "type": "GPIO",
+            "cycle": 100
+        }
+    ]
+}

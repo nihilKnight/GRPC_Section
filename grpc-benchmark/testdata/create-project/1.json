@@ -1,0 +1,33 @@
+{
+  "project_id": 1,
+  "name": "BenchmarkProject",
+  "description": "Performance test project",
+  "version_string": "v1.0.0",
+  "task_num": 2,
+  "tasks": [
+    {
+      "task_id": 1,
+      "name": "Task1",
+      "type": "RISING",
+      "priority": 1,
+      "cycle": 100,
+      "trigger": "timer"
+    },
+    {
+      "task_id": 2,
+      "name": "Task2",
+      "type": "FALLING",
+      "priority": 2,
+      "cycle": 200,
+      "trigger": "event"
+    }
+  ],
+  "device_num": 1,
+  "devices": [
+    {
+      "device_id": 1,
+      "type": "GPIO",
+      "cycle": 50
+    }
+  ]
+}

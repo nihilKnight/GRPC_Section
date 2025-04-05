@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+option go_package = "github.com/nihilKnight/grpc-section/gen";
+
+package plcruntime;
+
+import "google/protobuf/timestamp.proto";
+
+service PLCRuntimeService {
+    rpc ExportLogs(LogExportRequest) returns (LogEntry);
+
+    rpc CreateProject(ProjectMetadata) returns (ProjectCreationResponse);
+    rpc ImportProgram(ProgramSource) returns (ImportStatus);
+    rpc ExportProject(ProjectExportRequest) returns (ProjectMetadata);
+}
+
+
+// ==================== Logs ====================
+message LogEntry {
+    enum LogLevel {
+        DEBUG = 0;
+        INFO = 1;
+        WARNING = 2;
+        ERROR = 3;
+        UNKNOWN = 4;
+    }
+    google.protobuf.Timestamp timestamp = 1;
+    LogLevel level = 2;
+    string component = 3;
+    string message = 4;
+}
+
+message LogExportRequest {
+    uint32 chunk_size = 1;
+}
+
+
+// ==================== Configs ====================
+message TaskMetadata {
+    enum TriggerType {
+        RISING = 0;
+        FALLING = 1;
+        CYCLE = 3;
+    }
+    uint32 task_id = 1;
+    string name = 2;
+    TriggerType type = 3;
+    uint32 priority = 4;
+    uint32 cycle = 5;
+    string trigger = 6;
+}
+
+message BusDeviceMetadata {
+    enum DeviceType {
+        GPIO = 0;
+        MODBUS = 1;
+        OTHER = 2;
+    }
+    uint32 device_id = 1;
+    DeviceType type = 2;
+    uint32 cycle = 3;
+}
+
+message ProjectMetadata {
+    uint32 project_id = 1;
+    string name = 2;
+    string description = 3;
+    string version_string = 4;
+    uint32 task_num = 5;
+    repeated TaskMetadata tasks = 6;
+    uint32 device_num = 7;
+    repeated BusDeviceMetadata devices = 8;
+}
+
+message ProjectCreationResponse {
+    uint32 project_id = 1;
+    google.protobuf.Timestamp created_at = 2;
+    string initial_version = 3;
+}
+
+message ProgramSource {
+    uint32 program_id = 1;
+    string program_name = 2;
+    string content = 3;
+}
+
+message ImportStatus {
+    enum State {
+        RECEIVING = 0;
+        VALIDATING = 1;
+        APPLIED = 2;
+        FAILED = 3;
+    }
+    State state = 1;
+}
+
+message ProjectExportRequest {
+    uint32 version_id = 1;
+    string version_string = 2;
+    uint32 chunk_size = 3;
+}
